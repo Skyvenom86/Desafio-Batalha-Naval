@@ -1,0 +1,85 @@
+#include <stdio.h>
+
+#define N 10  // tamanho do tabuleiro
+
+// Função para limpar o tabuleiro
+void limparTabuleiro(int tabuleiro[N][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            tabuleiro[i][j] = 0;
+        }
+    }
+}
+
+// Função para imprimir o tabuleiro
+void imprimirTabuleiro(int tabuleiro[N][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+// Função para desenhar cone
+void desenharCone(int tabuleiro[N][N], int x, int y) {
+    // Cone 3 linhas
+    tabuleiro[x][y] = 1;
+    if (y - 1 >= 0) tabuleiro[x + 1][y - 1] = 1;
+    tabuleiro[x + 1][y] = 1;
+    if (y + 1 < N) tabuleiro[x + 1][y + 1] = 1;
+
+    if (y - 2 >= 0) tabuleiro[x + 2][y - 2] = 1;
+    if (y - 1 >= 0) tabuleiro[x + 2][y - 1] = 1;
+    tabuleiro[x + 2][y] = 1;
+    if (y + 1 < N) tabuleiro[x + 2][y + 1] = 1;
+    if (y + 2 < N) tabuleiro[x + 2][y + 2] = 1;
+}
+
+// Função para desenhar cruz
+void desenharCruz(int tabuleiro[N][N], int x, int y) {
+    // centro
+    tabuleiro[x][y] = 1;
+    // linhas horizontais
+    for (int j = y - 2; j <= y + 2; j++) {
+        if (j >= 0 && j < N) tabuleiro[x][j] = 1;
+    }
+    // linhas verticais
+    for (int i = x - 2; i <= x + 2; i++) {
+        if (i >= 0 && i < N) tabuleiro[i][y] = 1;
+    }
+}
+
+// Função para desenhar octaedro (forma de losango)
+void desenharOctaedro(int tabuleiro[N][N], int x, int y) {
+    tabuleiro[x][y] = 1; // centro
+    if (x - 1 >= 0) tabuleiro[x - 1][y] = 1;
+    if (x + 1 < N) tabuleiro[x + 1][y] = 1;
+    if (y - 1 >= 0) tabuleiro[x][y - 1] = 1;
+    if (y + 1 < N) tabuleiro[x][y + 1] = 1;
+}
+
+int main() {
+    int tabuleiro[N][N];
+
+    // Cone
+    limparTabuleiro(tabuleiro);
+    desenharCone(tabuleiro, 0, 4); // ponto inicial (linha 0, coluna 4)
+    printf("Area afetada - Cone:\n");
+    imprimirTabuleiro(tabuleiro);
+
+    // Cruz
+    limparTabuleiro(tabuleiro);
+    desenharCruz(tabuleiro, 5, 5); // centro (linha 5, coluna 5)
+    printf("Area afetada - Cruz:\n");
+    imprimirTabuleiro(tabuleiro);
+
+    // Octaedro
+    limparTabuleiro(tabuleiro);
+    desenharOctaedro(tabuleiro, 4, 4); // centro (linha 4, coluna 4)
+    printf("Area afetada - Octaedro:\n");
+    imprimirTabuleiro(tabuleiro);
+
+    return 0;
+}
